@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Grid 
 {
+    public const int HEAT_MAP_MAX_VALUE = 100;
+    public const int HEAT_MAP_MIN_VALUE = 0;
+
     public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
     public class OnGridValueChangedEventArgs : EventArgs
     {
@@ -28,8 +31,6 @@ public class Grid
         gridArray = new int[width, height];
         debugTextArray = new TextMesh[width, height];
 
-        Debug.LogFormat("Width: {0} | Height: {1}", width, height);
-
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
@@ -41,15 +42,13 @@ public class Grid
         }
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
-
-        SetValue(0, 1, 56);
     }
 
     public void SetValue(int x, int y, int value)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
         {
-            gridArray[x, y] = value;
+            gridArray[x, y] = Mathf.Clamp(value, HEAT_MAP_MIN_VALUE, HEAT_MAP_MAX_VALUE);
             OnGridValueChanged?.Invoke(this, new OnGridValueChangedEventArgs { x = x, y = y });
             debugTextArray[x, y].text = gridArray[x, y].ToString();
         }

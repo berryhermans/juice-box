@@ -8,22 +8,16 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        grid = new Grid(4, 2, 10f, new Vector3(20,0));
-        new Grid(2, 5, 5f, new Vector3(0, -20));
-        new Grid(10, 10, 20f, new Vector3(-100, 50));
-
+        grid = new Grid(20, 10, 10f, Vector3.zero);
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            grid.SetValue(Utilities.GetMouseWorldPosition(), 56);
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            Debug.Log(grid.GetValue(Utilities.GetMouseWorldPosition()));
+            Vector3 pos = Utilities.GetMouseWorldPosition();
+            int value = grid.GetValue(pos);
+            grid.SetValue(pos, value + 5);
         }
     }
 }
